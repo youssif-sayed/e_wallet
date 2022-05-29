@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "816269085943",
+    "project_id": "e-wallet-2022",
+    "storage_bucket": "e-wallet-2022.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:816269085943:android:2c9d8cda00441e68b117f2",
+        "android_client_info": {
+          "package_name": "com.yousefsayed.e_wallet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "816269085943-25g4mjhrr1nkelq5incdqq1n9387n2ov.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC70URhgNYEUg3LzboLleQ6xFWAttu_L5I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "816269085943-25g4mjhrr1nkelq5incdqq1n9387n2ov.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "816269085943-e46pck0eg445sim85he7jqf37s0phdgi.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.yousefsayed.eWallet"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
