@@ -1,4 +1,5 @@
 import 'package:e_wallet/util/sign.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class SIGNUP extends StatefulWidget {
@@ -11,8 +12,14 @@ class SIGNUP extends StatefulWidget {
 class _SIGNUPState extends State<SIGNUP> {
 
   bool _secureText = true;
-  String email='',password='',name='';
   final _formkey = GlobalKey<FormState>();
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  String _email = '';
+  String _password = '';
+  String _name= '';
+  String? _errorText;
+
 
   @override
   Widget build(BuildContext context) {
@@ -41,8 +48,9 @@ class _SIGNUPState extends State<SIGNUP> {
                     children: <Widget>[
                       SizedBox(height: 20,),
                       TextFormField(
-                        onChanged: (value){
-                          name=value;
+                        onSaved: (String? value){
+                          _name=value!.trim();
+                          UserID.userdata ['name'] = _name;
                         },
                         keyboardType: TextInputType.name,
                         validator: (value){
@@ -83,18 +91,21 @@ class _SIGNUPState extends State<SIGNUP> {
                       ),
                       SizedBox(height: 5,),
                       TextFormField(
-                        onSaved: (value){
-                          email=value!;
+                        onSaved: (String? email) {
+                          _email = email!.trim();
+                          UserID.userdata ['email'] = _email;
                         },
                         keyboardType: TextInputType.emailAddress,
-                        validator: (value){
-                          if(value!.isEmpty || !RegExp(r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$').hasMatch(value))
-                          {
-                            return "Please enter a correct account";
-                          }else
-                          {
-                            return null;
+                        validator: (String? email) {
+                          if (email == null || email.isEmpty) {
+                            return 'Email is required';
                           }
+                          if (!RegExp(
+                              r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
+                              .hasMatch(email)) {
+                            return 'Email is invalid';
+                          }
+                          return null;
                         },
                         decoration: InputDecoration(
                           enabledBorder: OutlineInputBorder(
@@ -124,20 +135,15 @@ class _SIGNUPState extends State<SIGNUP> {
                       ),
                       SizedBox(height: 5,),
                       TextFormField(
-                        onSaved: (value){
-                          password=value!;
-                        },
-                        validator: (value){
-                          if(value!.isEmpty)
-                          {
-                            return "Please enter a password";
-                          }else if(value.length < 8)
-                          {
-                            return "Please enter a password more than 8 characters";
-                          }else
-                          {
-                            return !UserSign.state?UserSign.stateText:null;
+                        validator: (String? password) {
+                          if (password == null || password.isEmpty) {
+                            return 'Password is required';
                           }
+                          return null;
+                        },
+                        onSaved: (String? password) {
+                          _password = password!.trim();
+                          UserID.userdata ['password'] = _password;
                         },
                         decoration: InputDecoration(
                           enabledBorder: OutlineInputBorder(
@@ -193,21 +199,7 @@ class _SIGNUPState extends State<SIGNUP> {
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(25)),
                             color: Color(0xFF6FC3E7),
-                            onPressed: () async{
-                              if(_formkey.currentState!.validate())
-                              {
-
-                                  print(name);
-                                  print(email);
-                                  print(password);
-                                  UserSign.name=name;
-                                  UserSign.emailaddress=email;
-                                  UserSign.password;
-                                  UserSign.signUp(email,password);
-                                  UserSign.state ?Navigator.pushReplacementNamed(context, 'Home'):null;
-
-                              }
-                            },
+                            onPressed: () => _signup(context),
                             child: Text(
                               'SIGN UP',
                               style: TextStyle(
@@ -262,4 +254,68 @@ class _SIGNUPState extends State<SIGNUP> {
       ),
     );
   }
-}
+
+
+
+
+  void _signup(BuildContext context) async {
+    final formState = _formKey.currentState;
+    setState(() => _errorText = null);
+
+    if (formState != null) {
+      if (formState.validate()) {
+        formState.save();
+         print('i amm calling signup function');
+        User? user = await signUpUsingEmailPassword(
+          email: _email,
+          password: _password,
+          context: context,
+        );
+         print('signup done');
+        if (user?.uid != null) {
+          UserID.userID = user;
+          UserID.push_user_data();
+
+
+          Navigator.of(context).pushReplacementNamed('Home');
+        } else {
+          setState(() => _errorText = 'Email or Password is incorrect');
+        }
+
+      }
+    }
+  }
+
+  static Future<User?> signUpUsingEmailPassword({
+    required String email,
+    required String password,
+    required BuildContext context,
+  }) async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    User? user;
+
+
+      try {
+        print('i am inside try');
+        final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email:email,
+          password: password,
+        );
+        user = credential.user;
+      } on FirebaseAuthException catch (e) {
+
+        if (e.code == 'weak-password') {
+          print('The password provided is too weak.');
+        } else if (e.code == 'email-already-in-use') {
+          print('The account already exists for that email.');
+
+        }
+        print('i am in last');
+      } catch (e) {
+        print(e);
+      }
+
+      return user;
+    }
+  }
+

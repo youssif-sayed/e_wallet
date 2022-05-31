@@ -22,7 +22,7 @@ class Profile extends StatelessWidget {
                 Center(
                   child: SizedBox(
                     child: Text(
-                      '${UserSign.name}',
+                      '${UserID.userdata['name']}',
                       style: TextStyle(
                         color: Color(0xffDBAE72),
                         fontSize: 30,

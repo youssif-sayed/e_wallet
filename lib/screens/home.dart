@@ -64,7 +64,7 @@ class _HomeState extends State<Home> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('${UserSign.name}',style: TextStyle(color:Colors.white,fontSize: 30),),
+                            Text('${UserID.userdata['name']}',style: TextStyle(color:Colors.white,fontSize: 30),),
                             Text('123 456 789',style: TextStyle(color:Colors.white,fontFamily: 'Roboto',fontSize: 20),),
                           ],
                         ),
