@@ -19,7 +19,7 @@ class UserID {
 
 
   static Map<String,dynamic> userdata= {
-    'name':'',
+    'name':'Holder Name',
     'email':'',
     'password':'',
     'id':'${Random().nextInt(100000000).toString()}',
@@ -34,12 +34,13 @@ class UserID {
     db.collection("userData").doc('${userID?.uid}').set(userdata).onError((e, _) => print("Error writing document: $e"));
   }
 
-  static void get_user_data() async {
+  static Future<void> get_user_data() async {
     final docRef = await db.collection("userData").doc("${userID?.uid}");
     docRef.get().then(
           (DocumentSnapshot doc) async {
         final data = await doc.data() as Map<String, dynamic>;
         userdata = data;
+
       },
       onError: (e) => print("Error getting document: $e"),
     );

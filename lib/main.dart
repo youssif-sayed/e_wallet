@@ -1,4 +1,5 @@
 import 'package:e_wallet/screens/home.dart';
+import 'package:e_wallet/screens/loading_location_screen/loading.dart';
 
 import 'screens/profile.dart';
 import 'screens/signin.dart';
@@ -57,6 +58,7 @@ class MyApp extends StatelessWidget {
         'Pay':(context) => Pay(),
         'Bill':(context) => Bill(),
         'Home':(context)=>Home(),
+        'Loading':(context)=>Loading(),
       },
     );
   }

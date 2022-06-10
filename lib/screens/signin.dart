@@ -12,7 +12,7 @@ class SIGNIN extends StatefulWidget {
 class _SIGNINState extends State<SIGNIN> {
   var email, password;
   bool _secureText = true;
-  final _formkey = GlobalKey<FormState>();
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String _email = '';
   String _password = '';
@@ -43,7 +43,7 @@ class _SIGNINState extends State<SIGNIN> {
             ),
             SizedBox(height: 20,),
             Form(
-              key: _formkey,
+              key: _formKey,
               child: Padding(padding: const EdgeInsets.symmetric(
                   horizontal: 40),
                 child: Column(
@@ -145,7 +145,8 @@ class _SIGNINState extends State<SIGNIN> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(35)),
                           color: Color(0xFFDBAE72),
-                          onPressed: () => _login(context),
+                          onPressed: () {
+                            _login(context);},
                           child: Text(
                             'SIGN IN',
                             style: TextStyle(
@@ -219,8 +220,9 @@ class _SIGNINState extends State<SIGNIN> {
           UserID.get_user_data();
 
 
-          Navigator.of(context).pushReplacementNamed('Home');
+          await Navigator.of(context).pushReplacementNamed('Loading');
         } else {
+          print('not erorr');
           setState(() => _errorText = 'Email or Password is incorrect');
         }
 
@@ -243,6 +245,7 @@ class _SIGNINState extends State<SIGNIN> {
       );
 
       user = userCredential.user;
+
     } on FirebaseAuthException catch (e) {
       {
         if (e.code == 'user-not-found') {
@@ -252,7 +255,7 @@ class _SIGNINState extends State<SIGNIN> {
         }
       }
 
-      return user;
     }
+    return user;
   }
 }

@@ -64,8 +64,8 @@ class _HomeState extends State<Home> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('${UserID.userdata['name']}',style: TextStyle(color:Colors.white,fontSize: 30),),
-                            Text('123 456 789',style: TextStyle(color:Colors.white,fontFamily: 'Roboto',fontSize: 20),),
+                            Text(UserID.userdata['name'],style: TextStyle(color:Colors.white,fontSize: 30),),
+                            Text('${UserID.userdata['id']}',style: TextStyle(color:Colors.white,fontFamily: 'Roboto',fontSize: 20),),
                           ],
                         ),
                         SizedBox(height: 30,),
@@ -73,7 +73,7 @@ class _HomeState extends State<Home> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text('Balance',style: TextStyle(color:Colors.white,fontFamily: 'Roboto',fontSize: 17.5),),
-                            Text('2000 EGP',style: TextStyle(color:Colors.white,fontFamily: 'Roboto',fontSize: 25),),
+                            Text('${UserID.userdata['balance']} EGP',style: TextStyle(color:Colors.white,fontFamily: 'Roboto',fontSize: 25),),
                           ],
                         ),
                       ],
@@ -131,23 +131,26 @@ class _HomeState extends State<Home> {
             ],
           ),
           SizedBox(height: 10,),
-          Container(
-            height: MediaQuery.of(context).size.height * 0.4399,
-            width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
-              color: Color(0xff6FC3E7),
+          Expanded(
+            flex: 1,
+            child: Container(
 
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(35),
-                topRight: Radius.circular(35),
+              width: MediaQuery.of(context).size.width,
+              decoration: BoxDecoration(
+                color: Color(0xff6FC3E7),
+
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(35),
+                  topRight: Radius.circular(35),
+                ),
               ),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(25.0),
-              child: Column(
-                children: [
-
-                ],
+              child: Padding(
+                padding: const EdgeInsets.all(25.0),
+                child: Column(
+                  children: [
+                    
+                  ],
+                ),
               ),
             ),
           ),
