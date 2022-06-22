@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../util/sign.dart';
@@ -31,7 +32,9 @@ class Profile extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(height: 75,),
+                SizedBox(
+                  height: 75,
+                ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   child: Row(
@@ -44,14 +47,14 @@ class Profile extends StatelessWidget {
                       ),
                       SizedBox(
                         child: FlatButton(
-                            onPressed: (){},
-                            child: Text(
-                              'Profile',
-                              style: TextStyle(
-                                color: Color(0xff6FC3E7),
-                                fontSize: 25,
-                              ),
+                          onPressed: () {},
+                          child: Text(
+                            'Profile',
+                            style: TextStyle(
+                              color: Color(0xff6FC3E7),
+                              fontSize: 25,
                             ),
+                          ),
                         ),
                       ),
                     ],
@@ -74,7 +77,7 @@ class Profile extends StatelessWidget {
                       ),
                       SizedBox(
                         child: FlatButton(
-                          onPressed: (){},
+                          onPressed: () {},
                           child: Text(
                             'Payment Methods',
                             style: TextStyle(
@@ -104,7 +107,7 @@ class Profile extends StatelessWidget {
                       ),
                       SizedBox(
                         child: FlatButton(
-                          onPressed: (){},
+                          onPressed: () {},
                           child: Text(
                             'History',
                             style: TextStyle(
@@ -128,15 +131,18 @@ class Profile extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Icon(
-                        Icons.settings,
+                        Icons.logout_rounded,
                         color: Color(0xff6FC3E7),
                         size: 25,
                       ),
                       SizedBox(
                         child: FlatButton(
-                          onPressed: (){},
+                          onPressed: () {
+                            UserID.signOut();
+                            Navigator.pushReplacementNamed(context, 'SIGNIN');
+                          },
                           child: Text(
-                            'Settings',
+                            'Logout',
                             style: TextStyle(
                               color: Color(0xff6FC3E7),
                               fontSize: 25,

@@ -27,6 +27,7 @@ class UserID {
     'time': '',
     'description': '',
   };
+  static Map<String, dynamic> billList = new Map();
 
   static void push_user_data() async {
     db
@@ -50,6 +51,10 @@ class UserID {
       },
       onError: (e) => print("Error getting document: $e"),
     );
+  }
+
+  static Future<void> signOut() async {
+    await FirebaseAuth.instance.signOut();
   }
 
   static Future<void> get_IDS() async {
@@ -89,6 +94,12 @@ class UserID {
     );
   }
 
+  static Future<void> update_bill_status(billID) async {
+    final docRef = await db.collection("Bill").doc("$billID");
+    await db.collection("Bill").doc('$billID').update({'status': true}).onError(
+        (e, _) => print("Error writing document: $e"));
+  }
+
   static Future<void> push_bill_data(bill) async {
     await db
         .collection("Bill")
@@ -101,5 +112,16 @@ class UserID {
     docRef.set({
       '${bill['id']}': false,
     });
+  }
+
+  static Future<void> get_bill_data(billID) async {
+    final docRef = await db.collection("Bill").doc("${billID}");
+    docRef.get().then(
+      (DocumentSnapshot doc) async {
+        final data = await doc.data() as Map<String, dynamic>;
+        billList = data;
+      },
+      onError: (e) => print("Error getting document: $e"),
+    );
   }
 }

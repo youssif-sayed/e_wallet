@@ -98,10 +98,12 @@ class _BillState extends State<Bill> {
                       var names = [];
                       var prices = [];
                       var numbers = [];
+                      var total = 0.0;
                       for (int i = 0; i < ProdductsNumbers; i++) {
                         names.add(productsNames[i]);
                         prices.add(productsPrices[i]);
                         numbers.add(productsNumbers[i]);
+                        total += productsPrices[i] * productsNumbers[i];
                       }
                       Map<String, dynamic> bill = {
                         'names': names,
@@ -110,6 +112,7 @@ class _BillState extends State<Bill> {
                         'sid': UserID.userdata['id'],
                         'id': '${Random().nextInt(100000).toString()}',
                         'status': false,
+                        'total':total,
                       };
 
                       showDialog(
